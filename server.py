@@ -1,0 +1,15 @@
+import os
+from flask import request, jsonify, make_response
+from werkzeug.utils import secure_filename
+from app import app
+from hough import hough_transform
+
+@app.route("/api/hough-transform", methods=["POST"])
+def POST_handler():
+    if request.method == "POST" :
+        input_image = request.files['image'].read()
+        results = hough_transform(input_image, app)
+        return jsonify(results)
+
+if __name__ == "__main__":
+    app.run(debug = True, host='0.0.0.0', port='5555')
