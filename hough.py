@@ -61,6 +61,7 @@ def hough_transform(input_image, app):
     lines_pcnn = cv.HoughLines(edges,1,np.pi/180,350)
 
     if lines_pcnn is not None:
+        print(type(lines_pcnn))
         return lines_pcnn
     else:
         return "No Line Detected"

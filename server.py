@@ -12,7 +12,7 @@ def POST_handler():
         if isinstance(results, str):
             return jsonify(result=results)
         else:
-            return jsonify(results.tolist())
+            return jsonify(lines=results.tolist())
 
 if __name__ == "__main__":
     app.run(debug = True, host='0.0.0.0', port='5555')
