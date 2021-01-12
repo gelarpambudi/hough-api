@@ -54,14 +54,13 @@ def pcnn(input_image):
     return Y_AC
 
 def hough_transform(input_image, app):
-    img = cv2.imdecode(numpy.fromstring(input_image, numpy.uint8), cv2.IMREAD_UNCHANGED)
+    img = cv.imdecode(np.fromstring(input_image, np.uint8), cv.IMREAD_UNCHANGED)
 
     Y_AC = pcnn(img)
     edges = cv.Canny((Y_AC*255).astype(np.uint8),100,100,apertureSize = 3)
     lines_pcnn = cv.HoughLines(edges,1,np.pi/180,350)
-    os.remove(file_path)
 
     if lines_pcnn is not None:
         return lines_pcnn
     else:
-        return None
+        return "No Line Detected"

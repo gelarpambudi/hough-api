@@ -8,8 +8,11 @@ from hough import hough_transform
 def POST_handler():
     if request.method == "POST" :
         input_image = request.files['image'].read()
-        results = hough_transform(input_image, app)
-        return jsonify(results)
+        results = hough_transform(input_image, app).tolist()
+        if isinstance(results, string):
+            return jsonify(result=results)
+        else:
+            return jsonify(results.tolist())
 
 if __name__ == "__main__":
     app.run(debug = True, host='0.0.0.0', port='5555')
