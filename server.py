@@ -9,7 +9,7 @@ def POST_handler():
     if request.method == "POST" :
         input_image = request.files['image'].read()
         results = hough_transform(input_image, app)
-        if isinstance(results, string):
+        if isinstance(results, str):
             return jsonify(result=results)
         else:
             return jsonify(results.tolist())
