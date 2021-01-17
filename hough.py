@@ -54,7 +54,8 @@ def pcnn(input_image):
     return Y_AC
 
 def hough_transform(input_image, app):
-    img = cv.imdecode(np.fromstring(input_image, np.uint8), cv.IMREAD_UNCHANGED)
+    #img = cv.imdecode(np.fromstring(input_image, np.uint8), cv.IMREAD_UNCHANGED)
+    img = cv.imread(save_image(input_image))
 
     Y_AC = pcnn(img)
     edges = cv.Canny((Y_AC*255).astype(np.uint8),100,100,apertureSize = 3)
@@ -65,3 +66,8 @@ def hough_transform(input_image, app):
         return lines_pcnn
     else:
         return "No Line Detected"
+
+def save_image(img_file):
+    filename = secure_filename(img_file.filename)
+    img_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return os.path.join(app.config['UPLOAD_FOLDER'], filename)

@@ -7,7 +7,7 @@ from hough import hough_transform
 @app.route("/api/hough-transform", methods=["POST"])
 def POST_handler():
     if request.method == "POST" :
-        input_image = request.files['image'].read()
+        input_image = request.files['image']
         results = hough_transform(input_image, app)
         if isinstance(results, str):
             return jsonify(result=results)
