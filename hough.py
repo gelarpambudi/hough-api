@@ -4,6 +4,7 @@ import cv2 as cv
 from scipy import signal
 import math
 import os
+from werkzeug.utils import secure_filename
 
 Alpha_F = 0.1
 Alpha_L = 1.0
