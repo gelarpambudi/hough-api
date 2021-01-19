@@ -1,5 +1,5 @@
 from flask import Flask
-from deepforest import deepforest
+
 
 UPLOAD_FOLDER = './static/uploads/'
 
