@@ -109,6 +109,7 @@ def showLines_kht(lines, source, lines_count=0):
 
 def init_kmeans(lines, interations=10, qtd_clusters=10):
     X = np.asarray(lines, dtype=np.float32)
+    print(X)
     qtd_180 = X[:,1]>178
     qtd_0 = X[:,1]<2
 
@@ -126,12 +127,13 @@ def init_kmeans(lines, interations=10, qtd_clusters=10):
     return k_means.cluster_centers_
 
 def get_lines(input_image, app):
-    img = cv.imdecode(np.fromstring(input_image, np.uint8), cv.IMREAD_UNCHANGED)
-    #img = cv.imread(save_image(input_image))
+    #img = cv.imdecode(np.fromstring(input_image, np.uint8), cv.IMREAD_UNCHANGED)
+    img = cv.imread(save_image(input_image))
 
     i_img = get_intensity(img)
     result, result2 = pcnn(i_img,T_extra=43, Num=10)
     lines,filt = init_kht(result)
+    print(lines)
     k_lines = init_kmeans(lines)
     
     if k_lines is not None:
