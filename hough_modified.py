@@ -130,7 +130,7 @@ def get_lines(input_image, app):
     #img = cv.imread(save_image(input_image))
 
     i_img = get_intensity(img)
-    result, result2 = pcnn(i_image,T_extra=43, Num=10)
+    result, result2 = pcnn(i_img,T_extra=43, Num=10)
     lines,filt = init_kht(result)
     k_lines = init_kmeans(lines)
     

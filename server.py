@@ -8,7 +8,7 @@ from hough_modified import get_lines
 @app.route("/api/hough-transform", methods=["POST"])
 def POST_handler():
     if request.method == "POST" :
-        input_image = request.files['image']
+        input_image = request.files['image'].read()
         #results = hough_transform(input_image, app)
         results = get_lines(input_image, app)
         if isinstance(results, str):
