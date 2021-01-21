@@ -3,3 +3,4 @@ scipy
 numpy
 opencv-python
 Werkzeug
+scikit-learn

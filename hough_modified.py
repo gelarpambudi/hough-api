@@ -39,7 +39,7 @@ def get_intensity(source):
     return s
 
 
-def pcnn(source, Alpha_L=0.1, Alpha_T=0.5, V_T=1.0, W=dist_Gausiankernel(9), Beta=0.1, T_extra=63, Num=10):
+def pcnn(source, Alpha_L=0.1, Alpha_T=0.5, V_T=1.0, W=dist_gausian_kernel(9), Beta=0.1, T_extra=63, Num=10):
     dim = source.shape
 
     F = np.zeros( dim, np.float)
