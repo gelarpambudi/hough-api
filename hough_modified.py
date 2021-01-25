@@ -39,14 +39,39 @@ def get_intensity(source):
     return s
 
 
-def pcnn(source, Alpha_L=0.1, Alpha_T=0.5, V_T=1.0, W=dist_gausian_kernel(9), Beta=0.1, T_extra=63, Num=10):
+def pcnn_1(source, Alpha_F=0.1, Alpha_L=1.0, Alpha_T=0.3,  V_F=0.5, V_L=0.2, V_T=20.0, Beta=0.1, Num=10, W=np.array([0.5, 1, 0.5, 1, 0, 1, 0.5, 1, 0.5,], np.float).reshape((3, 3)), M=np.array([0.5, 1, 0.5, 1, 0, 1, 0.5, 1, 0.5,], np.float).reshape((3, 3))):
     dim = source.shape
 
-    F = np.zeros( dim, np.float)
-    L = np.zeros( dim, np.float)
-    Y = np.zeros( dim, np.float)
-    T = np.ones( dim, np.float) + T_extra
-    Y_AC = np.zeros( dim, np.float)
+    F = np.zeros(dim, np.float)
+    L = np.zeros(dim, np.float)
+    Y = np.zeros(dim, np.float)
+    T = np.ones(dim, np.float)
+    Y_AC = np.zeros(dim, np.float)
+
+    S = cv.normalize(src.astype('float'), None, 0.0, 1.0, cv.NORM_MINMAX)
+
+    for cont in range(Num):
+        #numpy.convolve(W, Y, mode='same')
+        F = np.exp(-Alpha_F) * F + V_F * signal.convolve2d(Y, W, mode='same') + S
+        L = np.exp(-Alpha_L) * L + V_L * signal.convolve2d(Y, M, mode='same')
+        U = F * (1 + Beta * L)
+        T = np.exp(-Alpha_T) * T + V_T * Y
+        Y = (U>T).astype(np.float)
+        Y_AC = Y_AC + Y
+
+    Y_AC = cv.normalize(Y_AC.astype('float'), None, 0.0, 1.0, cv.NORM_MINMAX)
+
+    return Y, Y_AC
+
+
+def pcnn_2(source, Alpha_L=0.1, Alpha_T=0.5, V_T=1.0, W=dist_gausian_kernel(9), Beta=0.1, T_extra=63, Num=10):
+    dim = source.shape
+
+    F = np.zeros(dim, np.float)
+    L = np.zeros(dim, np.float)
+    Y = np.zeros(dim, np.float)
+    T = np.ones(dim, np.float) + T_extra
+    Y_AC = np.zeros(dim, np.float)
 
     for cont in range(Num):
         L = Alpha_L * signal.convolve2d(Y, W, mode='same')
@@ -109,7 +134,7 @@ def showLines_kht(lines, source, lines_count=0):
 
 def init_kmeans(lines, interations=10, qtd_clusters=10):
     X = np.asarray(lines, dtype=np.float32)
-    print(X)
+    print('init_kmeans X: ',X)
     qtd_180 = X[:,1]>178
     qtd_0 = X[:,1]<2
 
@@ -126,14 +151,22 @@ def init_kmeans(lines, interations=10, qtd_clusters=10):
 
     return k_means.cluster_centers_
 
+
 def get_lines(input_image, app):
     #img = cv.imdecode(np.fromstring(input_image, np.uint8), cv.IMREAD_UNCHANGED)
     img = cv.imread(save_image(input_image))
+    print('input image type: ',type(img))
 
     i_img = get_intensity(img)
-    result, result2 = pcnn(i_img,T_extra=43, Num=10)
+    print('get_intensity i_img: ', i_img.shape)
+
+    #result, result2 = pcnn_2(i_img,T_extra=43, Num=10)
+    result, result2 = pcnn_1(i_img, Num=10)
+    print('pcnn result: ',result)
+
     lines,filt = init_kht(result)
-    print(lines)
+    print('init_kht lines: ',lines)
+
     k_lines = init_kmeans(lines)
     
     if k_lines is not None:
