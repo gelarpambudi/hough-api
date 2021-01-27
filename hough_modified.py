@@ -48,7 +48,7 @@ def pcnn_1(source, Alpha_F=0.1, Alpha_L=1.0, Alpha_T=0.3,  V_F=0.5, V_L=0.2, V_T
     T = np.ones(dim, np.float)
     Y_AC = np.zeros(dim, np.float)
 
-    S = cv.normalize(src.astype('float'), None, 0.0, 1.0, cv.NORM_MINMAX)
+    S = cv.normalize(source.astype('float'), None, 0.0, 1.0, cv.NORM_MINMAX)
 
     for cont in range(Num):
         #numpy.convolve(W, Y, mode='same')
