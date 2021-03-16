@@ -6,3 +6,4 @@ Werkzeug
 scikit-learn
 pandas
 slidingwindow
+tqdm
