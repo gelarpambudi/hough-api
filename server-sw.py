@@ -1,0 +1,15 @@
+import os
+from flask import request, jsonify, Response
+from werkzeug.utils import secure_filename
+from app import app
+from hough_sw import get_powerline
+
+@app.route("/api/hough-transform", methods=["POST"])
+def POST_handler():
+    if request.method == "POST" :
+        input_image = request.files['image']
+        results = get_powerline(input_image, app)
+        return Response(results, mimetype='application/json')
+
+if __name__ == "__main__":
+    app.run(debug = True, host='0.0.0.0', port='4444')
