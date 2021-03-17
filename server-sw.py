@@ -8,7 +8,7 @@ from hough_sw import get_powerline
 def POST_handler():
     if request.method == "POST" :
         input_image = request.files['image']
-        patch_size = request.form['patch_size']
+        patch_size = int(request.form['patch_size'])
         results = get_powerline(input_image, app, patch_size)
         return Response(results, mimetype='application/json')
 
