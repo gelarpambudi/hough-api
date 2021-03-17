@@ -9,7 +9,7 @@ def POST_handler():
     if request.method == "POST" :
         input_image = request.files['image']
         patch_size = request.form['patch_size']
-        results = get_powerline(input_image, app)
+        results = get_powerline(input_image, app, patch_size)
         return Response(results, mimetype='application/json')
 
 if __name__ == "__main__":
