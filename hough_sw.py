@@ -64,12 +64,11 @@ def hough_transform(input_image, hough_thres):
     return lines_pcnn
 
 
-def get_powerline(input_image, app):
+def get_powerline(input_image, app, patch=500):
     img = cv.imread(save_image(input_image))
     img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
     
     if (img.shape[0] >= 3000) and (img.shape[0] >= 3000):
-        patch = 500
         windows = generate_sw(img,patch,0)
         line_df = pd.DataFrame(columns=["window", "pt1", "pt2"])
 
