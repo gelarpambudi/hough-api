@@ -98,8 +98,6 @@ def get_powerline(input_image, app, patch=500):
 
         for kernel_size in tqdm(range(3,15,2)):
             img = cv.bilateralFilter(img, 3, 250, 250)
-            pcnn_res = pcnn(img.copy())
-            edge = cv.Canny((pcnn_res*255).astype(np.uint8),100,100,apertureSize = 3)
             i = 100
             while (i <= 400):    
                 lines = hough_transform(img, i)
@@ -130,14 +128,12 @@ def detect_powerline(img):
     
     while (kernel_size <= 13):
         img = cv.bilateralFilter(img, 3, 250, 250)
-        pcnn_res = pcnn(img.copy())
-        edge = cv.Canny((pcnn_res*255).astype(np.uint8),100,100,apertureSize = 3)
         i = 100
         while (i <= 400):    
             lines = hough_transform(img, i)
             if lines is None:
                 break
-            if (lines.shape[0] < num_line) and (lines.shape[0] <= 5):
+            if (lines.shape[0] < num_line) and (lines.shape[0] >= 2):
                 num_line = lines.shape[0]
                 result = lines
             i = i + 20
@@ -145,7 +141,7 @@ def detect_powerline(img):
 
         if (lines is None) and (result is None):
             break
-        elif (lines is None) and (result.shape[0] <= 5) and (result.shape[0] >= 2):
+        elif (lines is None) and (result.shape[0] <= 3) and (result.shape[0] >= 1):
             continue
             
     if (lines is None) and (result is None):
